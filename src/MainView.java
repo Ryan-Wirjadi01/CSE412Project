@@ -31,9 +31,9 @@ public class MainView extends JFrame{
 		
 		//Created a panel for buttons
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new GridLayout(1, 2, 10, 10));
+		buttonPanel.setLayout(new GridLayout(1, 2, 20, 20));
 		buttonPanel.setBackground(Color.WHITE);
-		buttonPanel.setBorder(new EmptyBorder(325, 50, 325, 50));
+		buttonPanel.setBorder(new EmptyBorder(300, 50, 275, 50));
 		
 		buttonPanel.add(customerButton);
 		buttonPanel.add(deliveryButton);
@@ -42,8 +42,23 @@ public class MainView extends JFrame{
 		JLabel chooseLabel = new JLabel("Select User: ");
 		
 		JPanel labelPanel = new JPanel();
+//		labelPanel.setBorder(new EmptyBorder(75, 50, 200, 50));
+		labelPanel.add(chooseLabel);
 		
+		mainContainer.add(labelPanel, BorderLayout.NORTH);
 		mainContainer.add(buttonPanel, BorderLayout.CENTER);
+		
+		deliveryButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainContainer.removeAll();
+				JPanel driverPanel = new JPanel();
+				mainContainer.add(driverPanel);
+				validate();
+				
+			}
+			
+		});
 	}
 	
 	//Runs the program with main
