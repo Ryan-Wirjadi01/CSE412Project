@@ -12,6 +12,9 @@ public class MainView extends JFrame{
 	private static int WINDOW_WIDTH = 350;
 	private static int WINDOW_HEIGHT = 800;
 	
+	//Object Variables
+	driverLogin dl = new driverLogin();
+	
 	//This is the homePage
 	public MainView(String name) {
 		//Sets the attributes of the window
@@ -52,8 +55,7 @@ public class MainView extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainContainer.removeAll();
-				JPanel driverPanel = new JPanel();
-				mainContainer.add(driverPanel);
+				mainContainer.add(dl.driverLoginPanel());
 				validate();
 				
 			}
