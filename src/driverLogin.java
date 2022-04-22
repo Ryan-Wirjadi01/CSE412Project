@@ -7,18 +7,37 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 public class driverLogin {
-	public JPanel driverLoginPanel() {
+	//Object Variables
+	driverView dv = new driverView();
+	
+	public JPanel driverLoginPanel(Container mainContainer) {
+		//Creating a new Panel for the login page
 		JPanel loginPanel = new JPanel();
 		loginPanel.setBackground(Color.WHITE);
 		loginPanel.setLayout(new FlowLayout());
 		loginPanel.setBorder(new EmptyBorder(150, 50, 150, 50));
+		
+		//Creating the components for the panel
 		JLabel loginLabel = new JLabel("Enter Driver ID: ");
 		JTextField IDField = new JTextField("", 20);
 		JButton loginButton = new JButton("Login");
 		
+		//Adding the components to the panel
 		loginPanel.add(loginLabel);
 		loginPanel.add(IDField);
 		loginPanel.add(loginButton);
+		
+		//On login press
+		loginButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainContainer.removeAll();
+				mainContainer.add(dv.driverPanel());
+				mainContainer.validate();
+				
+			}
+			
+		});
 		
 		return loginPanel;
 	}

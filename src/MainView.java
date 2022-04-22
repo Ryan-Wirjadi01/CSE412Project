@@ -55,9 +55,8 @@ public class MainView extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainContainer.removeAll();
-				mainContainer.add(dl.driverLoginPanel());
-				validate();
-				
+				mainContainer.add(dl.driverLoginPanel(mainContainer));
+				validate();				
 			}
 			
 		});
