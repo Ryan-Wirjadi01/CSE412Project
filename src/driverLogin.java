@@ -13,7 +13,6 @@ public class driverLogin {
 	public JPanel driverLoginPanel(Container mainContainer) {
 		//Creating a new Panel for the login page
 		JPanel loginPanel = new JPanel();
-		loginPanel.setBackground(Color.WHITE);
 		loginPanel.setLayout(new FlowLayout());
 		loginPanel.setBorder(new EmptyBorder(150, 50, 150, 50));
 		
@@ -31,10 +30,15 @@ public class driverLogin {
 		loginButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mainContainer.removeAll();
-				mainContainer.add(dv.driverPanel());
-				mainContainer.validate();
-				
+				//If the text field is empty
+				if(IDField.getText().equals("")) {
+					JOptionPane.showMessageDialog(loginPanel, "Please enter ID");
+				}
+				else {
+					mainContainer.removeAll();
+					mainContainer.add(dv.driverPanel());
+					mainContainer.validate();
+				}				
 			}
 			
 		});
