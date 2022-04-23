@@ -1,5 +1,7 @@
 //import required classes and packages  
-import javax.swing.*;  
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;  
 import java.awt.event.*;  
 import java.lang.Exception;  
@@ -20,8 +22,8 @@ class CreateLoginForm extends JFrame implements ActionListener
     {     
           
         //create label for username   
-        userLabel = new JLabel();  
-        userLabel.setText("User ID");      //set label value for textField1  
+        userLabel = new JLabel("User ID", SwingConstants.CENTER);  
+        userLabel.setBorder(new EmptyBorder(50, 50, 50, 50));
           
         //create text field to get username from the user  
         textField1 = new JTextField(15);    //set length of the text  
@@ -41,7 +43,7 @@ class CreateLoginForm extends JFrame implements ActionListener
           
         //perform action on button click   
         b1.addActionListener(this);     //add action listener to button  
-        setTitle("LOGIN FORM");         //set title to the login form  
+        setTitle("CustomerLogin");         //set title to the login form  
     }  
       
     //define abstract method actionPerformed() which will be called on button click   
@@ -59,7 +61,7 @@ class CreateLoginForm extends JFrame implements ActionListener
             page.setVisible(true);  
               
             //create a welcome label and set it to the new page  
-            JLabel welcome = new JLabel("Welcome: " + userValue);  
+            JLabel welcome = new JLabel("Welcome: " + userValue, SwingConstants.CENTER);  
             page.getContentPane().add(welcome);  
         }  
         else{  
