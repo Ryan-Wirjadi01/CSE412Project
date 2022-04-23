@@ -10,8 +10,8 @@ class CustomerView extends JFrame
     {  
         setDefaultCloseOperation(javax.swing.  
         WindowConstants.DISPOSE_ON_CLOSE);  
-        setTitle("Welcome");  
-        setSize(400, 200);  
+        setTitle("CustomerView");  
+        setSize(300, 600);  
     }  
     
 }  
