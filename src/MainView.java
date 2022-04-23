@@ -14,6 +14,7 @@ public class MainView extends JFrame{
 	
 	//Object Variables
 	driverLogin dl = new driverLogin();
+	CustomerLogin cl = new CustomerLogin();
 	
 	//This is the homePage
 	public MainView(String name) {
@@ -67,7 +68,9 @@ public class MainView extends JFrame{
 		customerButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			
+				mainContainer.removeAll();
+				mainContainer.add(cl.customerLoginForm(mainContainer));
+				validate();
 			}
 			
 		});
