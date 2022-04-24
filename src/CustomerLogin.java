@@ -19,6 +19,7 @@ public class CustomerLogin extends JFrame
     JTextField  textField1;  
     
     CustomerView cv = new CustomerView();
+    DatabaseConnection dc = new DatabaseConnection();
       
     //calling constructor  
     public JPanel customerLoginForm(Container mainContainer)  
@@ -51,20 +52,22 @@ public class CustomerLogin extends JFrame
 			public void actionPerformed(ActionEvent e) {
 				String userValue = textField1.getText();        //get user entered username from the textField1   
 		          
-		        //check whether the credentials are authentic or not  
-		        if (!userValue.equals("")) {  //if the user id is not blank just accept it 
-		        	mainContainer.removeAll();
-					cv.customerPanel(mainContainer);
-					mainContainer.validate();
-		        }  
+		        //check whether the credentials are authentic or not 
+				if(userValue.equals("")) {
+					JOptionPane.showMessageDialog(newPanel, "Please enter ID");
+				}
+				else if(!dc.getCustomerID().contains(textField1.getText())) {
+		        	JOptionPane.showMessageDialog(newPanel, "Customer not found");
+		        }
 		        else{  
-		            //show error message  
-		        	JOptionPane.showMessageDialog(newPanel, "Please enter ID");
+		        	mainContainer.removeAll();
+					mainContainer.add(cv.customerPanel(mainContainer));
+					mainContainer.validate();
 		        }  
 			}
         	
         });     //add action listener to button  
-        setTitle("CustomerLogin");         //set title to the login form  
+        //setTitle("CustomerLogin");         //set title to the login form  
         
         return newPanel;
     }  
