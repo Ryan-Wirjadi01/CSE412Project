@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public class driverView {
 	//sql info
     Reader Dname;
-    String UserID = "1";	// need to pull text from driverLogin
+    String UserID = "";
     
     //variables for result display
     String driverName;
@@ -31,10 +31,11 @@ public class driverView {
 		driverPanel.setLayout(new GridLayout(4, 1, 10, 10));
 		driverPanel.setBorder(new EmptyBorder(150, 50, 300, 50));
 		
-		try {
+		//String UserID = dl.getDID();	// need to pull text from driverLogin
+		
+		try {			
 			driverInfo();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -44,7 +45,7 @@ public class driverView {
 		JLabel ratingLabel = new JLabel("Your Rating: " + rating);
 		JLabel orderLabel = new JLabel("Current Orders: ");
 		
-		welcomeLabel.setFont(new Font("Ariel", Font.BOLD, 26));
+		welcomeLabel.setFont(new Font("Ariel", Font.BOLD, 20));
 				
 		driverPanel.add(welcomeLabel);
 		driverPanel.add(IDLabel);
@@ -60,12 +61,13 @@ public class driverView {
 		Statement stmt = null;
 		ResultSet result = null;
 		
-		String url = "jdbc:postgresql://localhost:5432/foodApp";
+		String url = "jdbc:postgresql://localhost:5432/postgres";	//****IMPORTANT: Change this*****
 	    String user = "postgres";
-	    String password = "password";	//password is specific to the user -- make sure to change 
+	    String password = "rwirjadi";	//password is specific to the user -- make sure to change 
 	   
-		
-		String query = "SELECT * FROM deliverydriver WHERE did = " + UserID;
+	    driverLogin dl = new driverLogin();
+	    //System.out.println(getDID);
+		String query = "SELECT * FROM deliveryDriver WHERE did = '" + UserID + "'";
 		 
         try (Connection con = DriverManager.getConnection(url, user, password); PreparedStatement pst = con.prepareStatement(query)) {
         	stmt = con.createStatement();
@@ -100,6 +102,9 @@ public class driverView {
         }
 		
 	}
+	
+	public void setDID(String ID) {
+		UserID = ID;
+	}
 }
-
 
