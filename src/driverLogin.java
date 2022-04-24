@@ -1,6 +1,10 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -9,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 public class driverLogin {
 	//Object Variables
 	driverView dv = new driverView();
+	DatabaseConnection dc = new DatabaseConnection();
 	
 	public JPanel driverLoginPanel(Container mainContainer) {
 		//Creating a new Panel for the login page
@@ -25,6 +30,7 @@ public class driverLogin {
 		loginPanel.add(loginLabel);
 		loginPanel.add(IDField);
 		loginPanel.add(loginButton);
+	
 		
 		//On login press
 		loginButton.addActionListener(new ActionListener() {
@@ -34,6 +40,11 @@ public class driverLogin {
 				if(IDField.getText().equals("")) {
 					JOptionPane.showMessageDialog(loginPanel, "Please enter ID");
 				}
+				//If user does not exist in database;
+				else if(!dc.getDeliveryDriverID().contains(IDField.getText())) {
+					JOptionPane.showMessageDialog(loginPanel, "Delivery driver not found");
+				}
+				
 				else {
 					mainContainer.removeAll();
 					mainContainer.add(dv.driverPanel());
