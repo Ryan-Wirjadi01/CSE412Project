@@ -15,6 +15,8 @@ public class driverLogin {
 	driverView dv = new driverView();
 	DatabaseConnection dc = new DatabaseConnection();
 	
+	String did = "";
+	
 	public JPanel driverLoginPanel(Container mainContainer) {
 		//Creating a new Panel for the login page
 		JPanel loginPanel = new JPanel();
@@ -46,6 +48,7 @@ public class driverLogin {
 				}
 				
 				else {
+					dv.setDID(IDField.getText());
 					mainContainer.removeAll();
 					mainContainer.add(dv.driverPanel());
 					mainContainer.validate();
