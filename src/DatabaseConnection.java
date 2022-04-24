@@ -2,36 +2,60 @@ import java.sql.*;
 import java.util.ArrayList;
 
 //requires the postgresql library
-public  class DatabaseConnection {
+public class DatabaseConnection {
 
     //change Url, User, and Pass depending on what it is for your own postgresql server
-    private static final String connectionUrl = "jdbc:postgresql://localhost:5432/foodapp";
+    private static final String connectionUrl = "jdbc:postgresql://localhost:5432/postgres"; 	//****IMPORTANT: Change this*****
     private static final String user = "postgres";
-    private static final String pass = "123";
+    private static final String pass = "rwirjadi";												//****IMPORTANT: Change this*****
 
     //testing methods
-    public static void main(String[] args) {
-        //ArrayList<String> res = getRestaurants("tempe");
-        //System.out.println("length: " + res.size());
-        //for (String str: res) {
-        //    System.out.println(str);
-        //}
-
-        //ArrayList<String> food = getFoodList("domino's");
-        //System.out.println("length: " + food.size());
-        //for (String str: food) {
-        //    System.out.println(str);
-        //}
-
-        //System.out.println("Price: " + getFoodPrice("domino's", "cheese pizza"));
-
-        //insertCustomer(23456789, "Tempe", "First Last", 4);
-
-        //System.out.println("Customer name: " + getCustomerName(3));
-        //System.out.println("Customer address: " + getCustomerAddress(3));
-
-        //insertOrder("not delivered", 4, 4, 4, 3, "2022-23-04 21:22:15", 2, 2, 17.0);
-        updateOrderStatus(4, "not delivered");
+	/*
+	 * public static void main(String[] args) { //ArrayList<String> res =
+	 * getRestaurants("tempe"); //System.out.println("length: " + res.size()); //for
+	 * (String str: res) { // System.out.println(str); //}
+	 * 
+	 * //ArrayList<String> food = getFoodList("domino's");
+	 * //System.out.println("length: " + food.size()); //for (String str: food) { //
+	 * System.out.println(str); //}
+	 * 
+	 * //System.out.println("Price: " + getFoodPrice("domino's", "cheese pizza"));
+	 * 
+	 * //insertCustomer(23456789, "Tempe", "First Last", 4);
+	 * 
+	 * //System.out.println("Customer name: " + getCustomerName(3));
+	 * //System.out.println("Customer address: " + getCustomerAddress(3));
+	 * 
+	 * //insertOrder("not delivered", 4, 4, 4, 3, "2022-23-04 21:22:15", 2, 2,
+	 * 17.0); //updateOrderStatus(4, "not delivered");
+	 * 
+	 * ArrayList<String> id = getDeliveryDriverID(); for(String i : id) {
+	 * System.out.println(i); } }
+	 */
+    
+    public ArrayList<String> getDeliveryDriverID() {
+    	Connection c;
+    	Statement stmt;
+    	ArrayList<String> deliveryID = new ArrayList<>();
+    	try {
+    		Class.forName("org.postgresql.Driver");
+    		c = DriverManager.getConnection(connectionUrl, user, pass);
+    		c.setAutoCommit(false);
+    		
+    		stmt = c.createStatement();
+    		ResultSet rs = stmt.executeQuery("SELECT did FROM deliveryDriver;");
+    		
+    		while(rs.next()) {
+    			deliveryID.add(rs.getString("did"));
+    		}
+    		rs.close();
+    		stmt.close();
+    		c.close();
+    	} catch(Exception e) {
+    		System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+    	}
+    	return deliveryID;
     }
 
 
