@@ -24,6 +24,8 @@ public class driverView {
     String driverName;
     int driverID;
     int rating;
+    String orders;
+    int orderCount;
 
 	public JPanel driverPanel() {
 		//Create the GUI
@@ -35,6 +37,7 @@ public class driverView {
 		
 		try {			
 			driverInfo();
+			orderInfo();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -43,7 +46,7 @@ public class driverView {
 		JLabel welcomeLabel = new JLabel("Hello " + driverName);
 		JLabel IDLabel = new JLabel("Driver ID: " + driverID);
 		JLabel ratingLabel = new JLabel("Your Rating: " + rating);
-		JLabel orderLabel = new JLabel("Current Orders: ");
+		JLabel orderLabel = new JLabel("Current Orders: " + orderCount);
 		
 		welcomeLabel.setFont(new Font("Ariel", Font.BOLD, 20));
 				
@@ -61,18 +64,18 @@ public class driverView {
 		Statement stmt = null;
 		ResultSet result = null;
 		
-		String url = "jdbc:postgresql://localhost:5432/postgres";	//****IMPORTANT: Change this*****
+		String url = "jdbc:postgresql://localhost:5432/foodApp";	//****IMPORTANT: Change this*****
 	    String user = "postgres";
-	    String password = "rwirjadi";	//password is specific to the user -- make sure to change 
+	    String password = "password";	//password is specific to the user -- make sure to change 
 	   
-	    driverLogin dl = new driverLogin();
+	    //driverLogin dl = new driverLogin();
 	    //System.out.println(getDID);
 		String query = "SELECT * FROM deliveryDriver WHERE did = '" + UserID + "'";
 		 
         try (Connection con = DriverManager.getConnection(url, user, password); PreparedStatement pst = con.prepareStatement(query)) {
         	stmt = con.createStatement();
 		    result = stmt.executeQuery(query);
-		    //Reader name = rs.getCharacterStream("name");
+
 		    while(result.next()) {
 		    	driverID = result.getInt("did");
 		    	rating = result.getInt("rating");
@@ -92,6 +95,41 @@ public class driverView {
 			 
 		    }
 		    //System.out.println("ID: "+ driverID + "rating" + rating + "name" + driverName);
+
+        } catch (SQLException ex) {
+
+        	 System.out.println("SQLException: " + ex.getMessage());
+        	 System.out.println("SQLState: " + ex.getSQLState());
+        	 System.out.println("VendorError: " + ex.getErrorCode());
+       
+        }
+		
+	}
+	
+	public void orderInfo() {
+		Statement stmt = null;
+		ResultSet result = null;
+		
+		String url = "jdbc:postgresql://localhost:5432/foodApp";	//****IMPORTANT: Change this*****
+	    String user = "postgres";
+	    String password = "password";	//password is specific to the user -- make sure to change 
+	   
+	    //driverLogin dl = new driverLogin();
+
+	    String query = "SELECT order_id from delivers where did = " + UserID + ";";
+		 
+        try (Connection con = DriverManager.getConnection(url, user, password); PreparedStatement pst = con.prepareStatement(query)) {
+        	stmt = con.createStatement();
+		    result = stmt.executeQuery(query);
+
+		    while(result.next()) {
+		    	//if(result.next())
+		    		//orders = result.getInt("order_id") + ", ";
+		    	//else
+		    	//	orders = result.getInt("order_id")+"";
+		    	orderCount++;			    
+		    }
+		    System.out.println("orders: "+ orders);
 
         } catch (SQLException ex) {
 

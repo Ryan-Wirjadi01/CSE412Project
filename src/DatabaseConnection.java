@@ -5,9 +5,9 @@ import java.util.ArrayList;
 public class DatabaseConnection {
 
     //change Url, User, and Pass depending on what it is for your own postgresql server
-    private static final String connectionUrl = "jdbc:postgresql://localhost:5432/postgres"; 	//****IMPORTANT: Change this*****
+    private static final String connectionUrl = "jdbc:postgresql://localhost:5432/foodApp"; 	//****IMPORTANT: Change this*****
     private static final String user = "postgres";
-    private static final String pass = "rwirjadi";												//****IMPORTANT: Change this*****
+    private static final String pass = "password";												//****IMPORTANT: Change this*****
 
     //testing methods
 	/*
@@ -46,7 +46,7 @@ public class DatabaseConnection {
     		ResultSet rs = stmt.executeQuery("SELECT did FROM deliveryDriver;");
     		
     		while(rs.next()) {
-    			deliveryID.add(rs.getString("did"));
+			deliveryID.add(rs.getString("did"));
     		}
     		rs.close();
     		stmt.close();
