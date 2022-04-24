@@ -29,6 +29,9 @@ public  class DatabaseConnection {
 
         //System.out.println("Customer name: " + getCustomerName(3));
         //System.out.println("Customer address: " + getCustomerAddress(3));
+
+        //insertOrder("not delivered", 4, 4, 4, 3, "2022-23-04 21:22:15", 2, 2, 17.0);
+        updateOrderStatus(4, "not delivered");
     }
 
 
@@ -191,5 +194,42 @@ public  class DatabaseConnection {
         return address;
     }
 
+    public static void insertOrder(String status, int rest_rating, int drive_rating, int order_id, int food_rating, String timeStamp, int customer_id, int quantity, double price){
+        Connection c;
+        Statement stmt;
+        try{
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection(connectionUrl, user, pass);
+            c.setAutoCommit(false);
 
+            stmt = c.createStatement();
+            stmt.executeUpdate("INSERT INTO order_place (status, restaurant_rating, driver_rating, order_id, food_rating, timestamp, customer_id, item_quantity, item_price) "
+                    + "VALUES ('" + status + "'," + rest_rating + "," + drive_rating + "," + order_id + "," + food_rating + ",'" + timeStamp + "'," + customer_id + "," + quantity + "," + price + ");");
+            stmt.close();
+            c.commit();
+            c.close();
+        }catch(Exception e){
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+    }
+
+    public static void updateOrderStatus(int orderID, String status){
+        Connection c;
+        Statement stmt;
+        try{
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection(connectionUrl,user,pass);
+            c.setAutoCommit(false);
+
+            stmt = c.createStatement();
+            stmt.executeUpdate("UPDATE order_place set status = '" + status + "' where order_id = " + orderID + ";");
+            stmt.close();
+            c.commit();
+            c.close();
+        }catch(Exception e){
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+    }
 }
