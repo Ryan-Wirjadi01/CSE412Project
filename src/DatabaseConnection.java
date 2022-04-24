@@ -11,21 +11,24 @@ public  class DatabaseConnection {
 
     //testing methods
     public static void main(String[] args) {
-        ArrayList<String> res = getRestaurants("tempe");
-        System.out.println("length: " + res.size());
-        for (String str: res) {
-            System.out.println(str);
-        }
+        //ArrayList<String> res = getRestaurants("tempe");
+        //System.out.println("length: " + res.size());
+        //for (String str: res) {
+        //    System.out.println(str);
+        //}
 
-        ArrayList<String> food = getFoodList("domino's");
-        System.out.println("length: " + food.size());
-        for (String str: food) {
-            System.out.println(str);
-        }
+        //ArrayList<String> food = getFoodList("domino's");
+        //System.out.println("length: " + food.size());
+        //for (String str: food) {
+        //    System.out.println(str);
+        //}
 
-        System.out.println("Price: " + getFoodPrice("domino's", "cheese pizza"));
+        //System.out.println("Price: " + getFoodPrice("domino's", "cheese pizza"));
 
+        //insertCustomer(23456789, "Tempe", "First Last", 4);
 
+        //System.out.println("Customer name: " + getCustomerName(3));
+        //System.out.println("Customer address: " + getCustomerAddress(3));
     }
 
 
@@ -122,6 +125,71 @@ public  class DatabaseConnection {
         return price;
     }
 
-    //public static
+    public static void insertCustomer(int payInfo, String address, String name, int id){
+        Connection c;
+        Statement stmt;
+        try{
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection(connectionUrl, user, pass);
+            c.setAutoCommit(false);
+            System.out.println("Opened database successfully");
+
+            stmt = c.createStatement();
+            stmt.executeUpdate("INSERT INTO CUSTOMER (pay_information, address, name, cid) "
+                    + "VALUES (" + payInfo + ",'" + address + "','" + name + "'," + id + ");");
+            stmt.close();
+            c.commit();
+            c.close();
+        }catch(Exception e){
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Records created successfully");
+    }
+
+    public static String getCustomerName(int cid){
+        Connection c;
+        Statement stmt;
+        String name = "";
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection(connectionUrl,user,pass);
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT name FROM customer WHERE cid = " + cid + ";");
+            rs.next();
+            name = rs.getString("name");
+            rs.close();
+            stmt.close();
+            c.close();
+        } catch( Exception e ) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return name;
+    }
+
+    public static String getCustomerAddress(int cid){
+        Connection c;
+        Statement stmt;
+        String address = "";
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection(connectionUrl,user,pass);
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT address FROM customer WHERE cid = " + cid + ";");
+            rs.next();
+            address = rs.getString("address");
+            rs.close();
+            stmt.close();
+            c.close();
+        } catch( Exception e ) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return address;
+    }
+
 
 }
