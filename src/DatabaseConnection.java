@@ -1,3 +1,4 @@
+import java.io.Reader;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -7,10 +8,10 @@ public class DatabaseConnection {
     //change Url, User, and Pass depending on what it is for your own postgresql server
     private static final String connectionUrl = "jdbc:postgresql://localhost:5432/foodApp";    //****IMPORTANT: Change this*****
     private static final String user = "postgres";
-    private static final String pass = "123";                                                //****IMPORTANT: Change this*****
+    private static final String pass = "password";                                                //****IMPORTANT: Change this*****
 
     //testing methods
-    /*public static void main(String[] args) {
+   /* public static void main(String[] args) {
         ArrayList<String> res = getRestaurants("chandler");
         System.out.println("length: " + res.size());
         for (String str : res) {
@@ -306,5 +307,65 @@ public class DatabaseConnection {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
+    }
+    
+    //order information
+    public static void orderConfirmation(int orderID) {
+    	 Connection c;
+         Statement stmt;
+         Reader Dname;
+         String status=""; 
+         Double price=0.00;
+         String restaurant="";
+         ArrayList<String> foodItems = new ArrayList<>();
+         try {
+        	 c = DriverManager.getConnection(connectionUrl, user, pass);
+             c.setAutoCommit(false);
+
+             stmt = c.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM order_place WHERE order_id = " + orderID + ";");
+             while(rs.next()) {
+            	 Dname = rs.getCharacterStream("status");
+            	 price = rs.getDouble("item_price");
+ 			    
+ 			    //used to convert reader to string
+ 			    StringBuilder builder = new StringBuilder();
+ 		        int numChars;
+ 		        char[] buffer = new char[4096];
+ 	
+ 		        while ((numChars = Dname.read(buffer)) >= 0) {
+ 		            builder.append(buffer, 0, numChars);
+ 		        }
+ 		        
+ 		        status = builder.toString();
+    
+             }
+             
+             rs = stmt.executeQuery("SELECT restaurant.name FROM order_place, restaurant, has WHERE order_place.order_id = " + orderID+ " AND order_place.order_id = has.order_id AND has.rid = restaurant.rid;");
+
+             while(rs.next()) {
+            	 Dname = rs.getCharacterStream("name");
+            	 StringBuilder builder = new StringBuilder();
+  		        int numChars;
+  		        char[] buffer = new char[4096];
+  	
+  		        while ((numChars = Dname.read(buffer)) >= 0) {
+  		            builder.append(buffer, 0, numChars);
+  		        }
+  		        
+  		        restaurant = builder.toString();
+            	 
+             }
+          
+             //System.out.println("status: "+ status + "price: "+ price + "Restaurant: " + restaurant);
+             rs.close();
+             stmt.close();             
+             
+         }catch(Exception e) {
+             System.err.println(e.getClass().getName() + ": " + e.getMessage());
+             System.exit(0);
+        	 
+         }
+    	
     }
 }

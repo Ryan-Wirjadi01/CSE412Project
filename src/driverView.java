@@ -3,16 +3,13 @@ import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 
 public class driverView {
@@ -129,7 +126,7 @@ public class driverView {
 		    	//	orders = result.getInt("order_id")+"";
 		    	orderCount++;			    
 		    }
-		    System.out.println("orders: "+ orders);
+		   // System.out.println("orders: "+ orders);
 
         } catch (SQLException ex) {
 
