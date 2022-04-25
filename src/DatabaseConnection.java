@@ -8,7 +8,7 @@ public class DatabaseConnection {
     //change Url, User, and Pass depending on what it is for your own postgresql server
     private static final String connectionUrl = "jdbc:postgresql://localhost:5432/foodApp";    //****IMPORTANT: Change this*****
     private static final String user = "postgres";
-    private static final String pass = "rwirjadi";                                                //****IMPORTANT: Change this*****
+    private static final String pass = "password";                                                //****IMPORTANT: Change this*****
 
     //testing methods
    /* public static void main(String[] args) {
@@ -342,7 +342,7 @@ public class DatabaseConnection {
          String status=""; 
          Double price=0.00;
          String restaurant="";
-         ArrayList<String> foodItems = new ArrayList<>();
+         //ArrayList<String> foodItems = new ArrayList<>();
          try {
         	 c = DriverManager.getConnection(connectionUrl, user, pass);
              c.setAutoCommit(false);
