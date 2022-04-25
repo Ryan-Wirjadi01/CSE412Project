@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 
 
@@ -21,13 +22,15 @@ public class driverView {
     String driverName;
     int driverID;
     int rating;
-    String orders;
-    int orderCount;
+    String orders="";
+	ArrayList<String> names = new ArrayList<>();
+
+    int orderCount=1;
 
 	public JPanel driverPanel() {
 		//Create the GUI
 		JPanel driverPanel = new JPanel();
-		driverPanel.setLayout(new GridLayout(4, 1, 10, 10));
+		driverPanel.setLayout(new GridLayout(10, 1, 10, 10));
 		driverPanel.setBorder(new EmptyBorder(150, 50, 300, 50));
 		
 		//String UserID = dl.getDID();	// need to pull text from driverLogin
@@ -35,6 +38,7 @@ public class driverView {
 		try {			
 			driverInfo();
 			orderInfo();
+		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -43,7 +47,10 @@ public class driverView {
 		JLabel welcomeLabel = new JLabel("Hello " + driverName);
 		JLabel IDLabel = new JLabel("Driver ID: " + driverID);
 		JLabel ratingLabel = new JLabel("Your Rating: " + rating);
-		JLabel orderLabel = new JLabel("Current Orders: " + orderCount);
+		JLabel orderLabel = new JLabel("Current Orders: " );
+		orderLabel.setFont(new Font("Arial", Font.BOLD, 16));
+		
+		
 		
 		welcomeLabel.setFont(new Font("Ariel", Font.BOLD, 20));
 				
@@ -52,6 +59,12 @@ public class driverView {
 		driverPanel.add(ratingLabel);
 		driverPanel.add(orderLabel);
 		
+		for (String ele : names) {
+			JLabel orderName = new JLabel("Order " + orderCount + ": "+ ele);
+			driverPanel.add(orderName);
+			driverPanel.revalidate();
+			orderCount++;
+        }
 		
 		
 		return driverPanel;
@@ -102,32 +115,38 @@ public class driverView {
         }
 		
 	}
-	
-	public void orderInfo() {
+	//Display the names of the orders for the driver
+	public void orderInfo() throws IOException{
 		Statement stmt = null;
-		ResultSet result = null;
+		ResultSet rs = null;
+		int count = 0;
 		
 		String url = "jdbc:postgresql://localhost:5432/foodApp";	//****IMPORTANT: Change this*****
 	    String user = "postgres";
 	    String password = "password";	//password is specific to the user -- make sure to change 
 	   
-	    //driverLogin dl = new driverLogin();
-
-	    String query = "SELECT order_id from delivers where did = " + UserID + ";";
+	    String query ="SELECT customer.name FROM delivers, deliverydriver, customer WHERE deliverydriver.did =" + UserID + "and deliverydriver.did = delivers.did AND delivers.customer_id = customer.cid;";
 		 
         try (Connection con = DriverManager.getConnection(url, user, password); PreparedStatement pst = con.prepareStatement(query)) {
         	stmt = con.createStatement();
-		    result = stmt.executeQuery(query);
+		    rs = stmt.executeQuery(query);
 
-		    while(result.next()) {
-		    	//if(result.next())
-		    		//orders = result.getInt("order_id") + ", ";
-		    	//else
-		    	//	orders = result.getInt("order_id")+"";
-		    	orderCount++;			    
+		    while(rs.next()) {
+		    	Dname = rs.getCharacterStream("name");
+			    
+			    //used to convert reader to string
+			    StringBuilder builder = new StringBuilder();
+		        int numChars;
+		        char[] buffer = new char[4096];
+	
+		        while ((numChars = Dname.read(buffer)) >= 0) {
+		            builder.append(buffer, 0, numChars);
+		        }
+		        
+		    	names.add(count, builder.toString());
+		    	count++;
 		    }
-		   // System.out.println("orders: "+ orders);
-
+		    
         } catch (SQLException ex) {
 
         	 System.out.println("SQLException: " + ex.getMessage());
