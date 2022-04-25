@@ -76,7 +76,7 @@ public class driverView {
 		
 		String url = "jdbc:postgresql://localhost:5432/foodApp";	//****IMPORTANT: Change this*****
 	    String user = "postgres";
-	    String password = "password";	//password is specific to the user -- make sure to change 
+	    String password = "rwirjadi";	//password is specific to the user -- make sure to change 
 	   
 	    //driverLogin dl = new driverLogin();
 	    //System.out.println(getDID);
@@ -123,7 +123,7 @@ public class driverView {
 		
 		String url = "jdbc:postgresql://localhost:5432/foodApp";	//****IMPORTANT: Change this*****
 	    String user = "postgres";
-	    String password = "password";	//password is specific to the user -- make sure to change 
+	    String password = "rwirjadi";	//password is specific to the user -- make sure to change 
 	   
 	    String query ="SELECT customer.name FROM delivers, deliverydriver, customer WHERE deliverydriver.did =" + UserID + "and deliverydriver.did = delivers.did AND delivers.customer_id = customer.cid;";
 		 

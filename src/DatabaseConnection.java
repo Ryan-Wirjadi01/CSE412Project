@@ -8,7 +8,7 @@ public class DatabaseConnection {
     //change Url, User, and Pass depending on what it is for your own postgresql server
     private static final String connectionUrl = "jdbc:postgresql://localhost:5432/foodApp";    //****IMPORTANT: Change this*****
     private static final String user = "postgres";
-    private static final String pass = "password";                                                //****IMPORTANT: Change this*****
+    private static final String pass = "rwirjadi";                                                //****IMPORTANT: Change this*****
 
     //testing methods
    /* public static void main(String[] args) {
@@ -86,6 +86,31 @@ public class DatabaseConnection {
             System.exit(0);
     	}
     	return customerID;
+    }
+    
+    public ArrayList<String> getLocation() {
+    	Connection c;
+    	Statement stmt;
+    	ArrayList<String> location = new ArrayList<>();
+    	try {
+    		Class.forName("org.postgresql.Driver");
+    		c = DriverManager.getConnection(connectionUrl, user, pass);
+    		c.setAutoCommit(false);
+    		
+    		stmt = c.createStatement();
+    		ResultSet rs = stmt.executeQuery("SELECT distinct location FROM restaurant;");
+    		
+    		while(rs.next()) {
+			location.add(rs.getString("location"));
+    		}
+    		rs.close();
+    		stmt.close();
+    		c.close();
+    	} catch(Exception e) {
+    		System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+    	}
+    	return location;
     }
 
     public static ArrayList<String> getRestaurants(String city) {
