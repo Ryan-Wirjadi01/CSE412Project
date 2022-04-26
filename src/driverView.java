@@ -93,6 +93,7 @@ public class driverView {
 		        }
 		        driverName = builder.toString();
 		    }
+		    con.close();
         } catch (SQLException ex) {
         	 System.out.println("SQLException: " + ex.getMessage());
         	 System.out.println("SQLState: " + ex.getSQLState());
@@ -129,6 +130,8 @@ public class driverView {
 		    	names.add(count, builder.toString());
 		    	count++;
 		    }
+		    con.close();
+
 		    
         } catch (SQLException ex) {
         	 System.out.println("SQLException: " + ex.getMessage());

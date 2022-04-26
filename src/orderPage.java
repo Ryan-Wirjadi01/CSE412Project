@@ -8,6 +8,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.BoxLayout;
 import javax.swing.JDialog;
@@ -23,9 +25,7 @@ public class orderPage extends JDialog{
 	
 	private String status= ""; 
 	private Float price = (float)0.00;
-	private String restaurant="";
-	private int orderNum = 1;	//not set to one
-
+	
 	public orderPage(ArrayList<String> foodList, Float totalPrice, String restName, int oID) {
         super();
         this.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
@@ -48,6 +48,8 @@ public class orderPage extends JDialog{
 		JLabel statusLabel = new JLabel("Order Status: " + status);	
 		JLabel restaurantLabel = new JLabel("Restaurant: "+ restName);	
 		JLabel priceLabel = new JLabel("Order Total: " + price);	
+		
+		//label set text 
 		this.add(confirmationPanel);
 		
 		confirmationPanel.add(orderLabel);
@@ -56,6 +58,27 @@ public class orderPage extends JDialog{
 		confirmationPanel.add(restaurantLabel);
 		confirmationPanel.add(priceLabel);
 		
+		Timer time = new Timer();
+		time.schedule(new TimerTask(){
+
+			@Override
+			public void run() {
+				if(status.contentEquals("delivered")) {
+					time.cancel();
+				}else if(status.contentEquals("not delivered")) {
+					status = "in progress";
+					statusLabel.setText("Order Status: " + status);
+					dc.updateOrderStatus(oID, status);
+					confirmationPanel.validate();
+				}else {
+					status = "delivered";
+					statusLabel.setText("Order Status: " + status);
+					dc.updateOrderStatus(oID, status);
+					confirmationPanel.validate();
+				}
+			}
+			
+		}, 10000, 10000);
 	}
 
 	public void orderView() {
@@ -67,7 +90,6 @@ public class orderPage extends JDialog{
 	    Statement stmt;
 	    Reader Dname;
 	    
-
 		String url = dc.getConnectionURL();	//****IMPORTANT: Change this*****
 	    String user = dc.getUser();
 	    String password = dc.getPass();	//password is specific to the user -- make sure to change 
@@ -93,17 +115,16 @@ public class orderPage extends JDialog{
 	        status = builder.toString();
 
          }
-	      
-         //System.out.println("status: "+ status + "price: "+ price + "Restaurant: " + restaurant);
-         rs.close();
-         stmt.close();             
+	     rs.close();
+         stmt.close(); 
+         c.close();
          
 	    }catch(Exception e) {
          System.err.println(e.getClass().getName() + ": " + e.getMessage());
-         System.exit(0);
-    	 
-	    }
-		
+         System.exit(0);	 
+	    }	
 	}
+	
+
 
 }

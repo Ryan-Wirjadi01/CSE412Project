@@ -74,12 +74,12 @@ public class RestaurantView extends JDialog{
 				// inserting orders 
 				int cID = Integer.parseInt(UserID);
 				int oID = dc.getorderID();
-				dc.insertOrder("not delivered", 4, 3,oID, 4 , dc.timeStamp(),cID, 1, totalPrice);
+				dc.insertOrder("not delivered", 4, 3, oID, 4 , dc.timeStamp(),cID, 1, totalPrice);
 				dispose();
 				
 				orderPage op = new orderPage(checkOutList, totalPrice, name, oID);
 				op.orderView();
-				System.out.println(totalPrice);
+				//System.out.println(totalPrice);
 			}
 		});
 	}
