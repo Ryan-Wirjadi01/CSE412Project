@@ -15,21 +15,28 @@ import java.sql.Statement;
 
 public class CustomerProfile extends JDialog{
 	//sql info
-    Reader Cname;
-    String UserID = "";
+    private Reader Cname;
+    private String UserID = "";
+    private DatabaseConnection dc = new DatabaseConnection();
     
-	String customerName;
-	int customerID;
-	String customerAddress;
-	int orderCount;
-	String orders;
+    private String customerName;
+    private int customerID;
+    private String customerAddress;
+    private int orderCount;
+    private String orders;
 	
-	public JPanel CustomerProfile(){
+	public CustomerProfile(String cid){
+		super();
+		this.setSize(350, 800);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
+		
 		JPanel customerPanel = new JPanel();
 		customerPanel.setLayout(new GridLayout(4, 1, 10, 10));
-		customerPanel.setBorder(new EmptyBorder(150, 50, 300, 50));
+		customerPanel.setBorder(new EmptyBorder(150, 20, 300, 20));
 		
 		try {			
+			UserID = cid;
 			customerInfo();
 			orderInfo();
 		} catch (IOException e) {
@@ -46,16 +53,17 @@ public class CustomerProfile extends JDialog{
 		customerPanel.add(IDLabel);
 		customerPanel.add(addressLabel);
 		customerPanel.add(orderLabel);
-		return customerPanel;
-	}
+	
+		this.add(customerPanel);
+	} 	
 	
 	public void customerInfo() throws IOException{
 		Statement stmt = null;
 		ResultSet result = null;
 		
-		String url = "jdbc:postgresql://localhost:5432/foodApp";	//****IMPORTANT: Change this*****
-	    String user = "postgres";
-	    String password = "bnwong2001";	//password is specific to the user -- make sure to change 
+		String url = dc.getConnectionURL();	//****IMPORTANT: Change this*****
+	    String user = dc.getUser();
+	    String password = dc.getPass();	//password is specific to the user -- make sure to change 
 		String query = "SELECT * FROM customer WHERE cid = '" + UserID + "'";
 		 
         try (Connection con = DriverManager.getConnection(url, user, password); PreparedStatement pst = con.prepareStatement(query)) {
@@ -80,7 +88,6 @@ public class CustomerProfile extends JDialog{
 		        customerName = builder.toString();
 			 
 		    }
-		    //System.out.println("ID: "+ driverID + "rating" + rating + "name" + driverName);
 
         } catch (SQLException ex) {
 
@@ -95,9 +102,9 @@ public class CustomerProfile extends JDialog{
 		Statement stmt = null;
 		ResultSet result = null;
 		
-		String url = "jdbc:postgresql://localhost:5432/foodApp";	//****IMPORTANT: Change this*****
-	    String user = "postgres";
-	    String password = "bnwong2001";	//password is specific to the user -- make sure to change 
+		String url = dc.getConnectionURL();	//****IMPORTANT: Change this*****
+	    String user = dc.getUser();
+	    String password = dc.getPass();	//password is specific to the user -- make sure to change 
 	   
 	    //driverLogin dl = new driverLogin();
 
@@ -123,5 +130,9 @@ public class CustomerProfile extends JDialog{
 	
 	public void setCID(String ID) {
 		UserID = ID;
+	}
+	
+	public void profileView() {
+		setVisible(true);
 	}
 }

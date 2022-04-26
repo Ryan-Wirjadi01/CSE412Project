@@ -16,6 +16,7 @@ class CustomerView
 	private DatabaseConnection dc = new DatabaseConnection();
 	private boolean hasFound = false;
     private ArrayList<String> rList;
+    private String UserID = "";
     
     public JPanel customerPanel(Container mainContainer)  
     {  
@@ -92,6 +93,8 @@ class CustomerView
     	profileButton.addActionListener(new ActionListener() {
     		@Override
 			public void actionPerformed(ActionEvent e) {
+    			CustomerProfile cp = new CustomerProfile(UserID); 
+    			cp.profileView();
     		}
     	});
     	
@@ -110,6 +113,7 @@ class CustomerView
 //    			}
     			else {
     				RestaurantView rv = new RestaurantView(answerField.getText());
+    				rv.setCID(UserID);
     				rv.foodview();
     			}
     		}
@@ -118,5 +122,9 @@ class CustomerView
     	return newPanel;
         
     }  
+    
+	public void setCID(String ID) {
+		UserID = ID;
+	}
     
 }

@@ -1,6 +1,8 @@
 import java.io.Reader;
 import java.sql.*;
 import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;  
 
 //requires the postgresql library
 public class DatabaseConnection {
@@ -8,11 +10,11 @@ public class DatabaseConnection {
     //change Url, User, and Pass depending on what it is for your own postgresql server
     private static final String connectionUrl = "jdbc:postgresql://localhost:5432/foodApp";    //****IMPORTANT: Change this*****
     private static final String user = "postgres";
-    private static final String pass = "rwirjadi";                                                //****IMPORTANT: Change this*****
+    private static final String pass = "password";                                                //****IMPORTANT: Change this*****
 
     //testing methods
-   /* public static void main(String[] args) {
-        ArrayList<String> res = getRestaurants("chandler");
+   /*public static void main(String[] args) {
+         ArrayList<String> res = getRestaurants("chandler");
         System.out.println("length: " + res.size());
         for (String str : res) {
             System.out.println(str);
@@ -36,7 +38,8 @@ public class DatabaseConnection {
         for (String i : id) {
             System.out.println(i);
         }
-    }*/
+	   System.out.println("Order:" + getorderID());
+   }*/
 
     public ArrayList<String> getDeliveryDriverID() {
         Connection c;
@@ -336,65 +339,47 @@ public class DatabaseConnection {
         }
     }
     
-    //order information
-    public void orderConfirmation(int orderID) {
-    	 Connection c;
-         Statement stmt;
-         Reader Dname;
-         String status=""; 
-         Double price=0.00;
-         String restaurant="";
-         ArrayList<String> foodItems = new ArrayList<>();
-         try {
-        	 c = DriverManager.getConnection(connectionUrl, user, pass);
-             c.setAutoCommit(false);
+    public static int getorderID() {
+    	int newID=0;
+    	Connection c;
+        Statement stmt;
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection(connectionUrl, user, pass);
+            c.setAutoCommit(false);
 
-             stmt = c.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM order_place WHERE order_id = " + orderID + ";");
-             while(rs.next()) {
-            	 Dname = rs.getCharacterStream("status");
-            	 price = rs.getDouble("item_price");
- 			    
- 			    //used to convert reader to string
- 			    StringBuilder builder = new StringBuilder();
- 		        int numChars;
- 		        char[] buffer = new char[4096];
- 	
- 		        while ((numChars = Dname.read(buffer)) >= 0) {
- 		            builder.append(buffer, 0, numChars);
- 		        }
- 		        
- 		        status = builder.toString();
-    
-             }
-             
-             rs = stmt.executeQuery("SELECT restaurant.name FROM order_place, restaurant, has WHERE order_place.order_id = " + orderID+ " AND order_place.order_id = has.order_id AND has.rid = restaurant.rid;");
-
-             while(rs.next()) {
-            	 Dname = rs.getCharacterStream("name");
-            	 StringBuilder builder = new StringBuilder();
-  		        int numChars;
-  		        char[] buffer = new char[4096];
-  	
-  		        while ((numChars = Dname.read(buffer)) >= 0) {
-  		            builder.append(buffer, 0, numChars);
-  		        }
-  		        
-  		        restaurant = builder.toString();
-            	 
-             }
-          
-             //System.out.println("status: "+ status + "price: "+ price + "Restaurant: " + restaurant);
-             rs.close();
-             stmt.close();             
-             
-         }catch(Exception e) {
-             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-             System.exit(0);
-        	 
-         }
-    	
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT MAX(order_id) FROM order_place;");
+            while(rs.next()) {
+            	newID = rs.getInt("max")+1;
+            }
+            stmt.close();
+            c.commit();
+            c.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    	return newID;
     }
+   
+    public static String timeStamp() {
+    	String time = "";
+    	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); 
+    	LocalDateTime now = LocalDateTime.now();  
+    	time = dtf.format(now);
+    	return time;
+    }
+    
+  /*  public String UserID;
+    public void setCID(String ID) {
+		 UserID = ID;
+		//return UserID;
+	}
+    
+    public String getCID() {
+    	return UserID;
+    };*/
     
     public String getConnectionURL() {
     	return connectionUrl;

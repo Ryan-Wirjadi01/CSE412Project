@@ -19,6 +19,7 @@ public class CustomerLogin
     JTextField  textField1;  
     
     CustomerView cv = new CustomerView();
+    //RestaurantView rv = new RestaurantView();
     DatabaseConnection dc = new DatabaseConnection();
       
     //calling constructor  
@@ -59,7 +60,10 @@ public class CustomerLogin
 				else if(!dc.getCustomerID().contains(textField1.getText())) {
 		        	JOptionPane.showMessageDialog(newPanel, "Customer not found");
 		        }
-		        else{  
+		        else{ 
+		        	cv.setCID(textField1.getText());
+		        	//dc.setCID(textField1.getText());
+		        	//System.out.println(dc.getCID());
 		        	mainContainer.removeAll();
 					mainContainer.add(cv.customerPanel(mainContainer));
 					mainContainer.validate();
@@ -68,7 +72,8 @@ public class CustomerLogin
         	
         });     //add action listener to button          
         return newPanel;
-    }  
+    }
+    
 }
       
 

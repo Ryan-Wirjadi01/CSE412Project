@@ -24,9 +24,9 @@ public class orderPage extends JDialog{
 	private String status= ""; 
 	private Float price = (float)0.00;
 	private String restaurant="";
-	private int orderNum = 1;
+	private int orderNum = 1;	//not set to one
 
-	public orderPage(ArrayList<String> foodList, Float totalPrice, String restName) {
+	public orderPage(ArrayList<String> foodList, Float totalPrice, String restName, int oID) {
         super();
         this.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
         this.setLocationRelativeTo(null); 
@@ -37,13 +37,14 @@ public class orderPage extends JDialog{
 		JPanel confirmationPanel = new JPanel();
 		confirmationPanel.setLayout(new GridLayout(10, 1, 10, 10));
 		confirmationPanel.setBorder(new EmptyBorder(150, 50, 300, 50));
-		orderConfirmation(orderNum);
+		
+		orderConfirmation(oID);
 
 		
 		JLabel orderLabel = new JLabel("Order Confirmation: ");	
-		orderLabel.setFont(new Font("Arial", Font.BOLD, 26));
+		orderLabel.setFont(new Font("Arial", Font.BOLD, 20));
 		
-		JLabel idLabel = new JLabel("Order ID: ");	
+		JLabel idLabel = new JLabel("Order ID: " + oID);	
 		JLabel statusLabel = new JLabel("Order Status: " + status);	
 		JLabel restaurantLabel = new JLabel("Restaurant: "+ restName);	
 		JLabel priceLabel = new JLabel("Order Total: " + price);	

@@ -10,13 +10,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-public class RestaurantView extends JDialog {
+public class RestaurantView extends JDialog{
+	
 	//global Variables
 	private DatabaseConnection dc = new DatabaseConnection();
+	private CustomerLogin cl = new CustomerLogin();
 	private ArrayList<String> fList = new ArrayList<>();
 	private ArrayList<String> checkOutList = new ArrayList<>();
 	private ArrayList<JCheckBox> checkboxes = new ArrayList<>();
 	private Float totalPrice = (float)0.00;
+    private String UserID = "";
+
 	
 	public RestaurantView(String name) {
 		//Set the layout of the dialog
@@ -66,12 +70,23 @@ public class RestaurantView extends JDialog {
 						totalPrice += dc.getFoodPrice(name, box.getText());
 					}
 				}
+				//need orderID< time stamp, customerID
+				// inserting orders 
+				int cID = Integer.parseInt(UserID);
+				int oID = dc.getorderID();
+				dc.insertOrder("not delivered", 4, 3,oID, 4 , dc.timeStamp(),cID, 1, totalPrice);
 				dispose();
-				orderPage op = new orderPage(checkOutList, totalPrice, name);
+				
+				orderPage op = new orderPage(checkOutList, totalPrice, name, oID);
 				op.orderView();
 				System.out.println(totalPrice);
 			}
 		});
+	}
+
+	
+	public void setCID(String ID) {
+		UserID = ID;
 	}
 	
 	public void foodview() {
