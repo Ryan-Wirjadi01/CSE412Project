@@ -1,6 +1,7 @@
 import java.io.Reader;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Random;
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime;  
 
@@ -13,8 +14,8 @@ public class DatabaseConnection {
     private static final String pass = "password";                                                //****IMPORTANT: Change this*****
 
     //testing methods
-   /*public static void main(String[] args) {
-         ArrayList<String> res = getRestaurants("chandler");
+    /* public static void main(String[] args) {
+       ArrayList<String> res = getRestaurants("chandler");
         System.out.println("length: " + res.size());
         for (String str : res) {
             System.out.println(str);
@@ -38,7 +39,7 @@ public class DatabaseConnection {
         for (String i : id) {
             System.out.println(i);
         }
-	   System.out.println("Order:" + getorderID());
+	   insertDriver(1,1);
    }*/
 
     public ArrayList<String> getDeliveryDriverID() {
@@ -369,6 +370,35 @@ public class DatabaseConnection {
     	LocalDateTime now = LocalDateTime.now();  
     	time = dtf.format(now);
     	return time;
+    }
+    
+    public static void insertDriver(int oID, int cid) {
+    	Connection c;
+        Statement stmt;
+        int did=0;
+        Random val = new Random();
+        
+        
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection(connectionUrl, user, pass);
+            c.setAutoCommit(false);
+
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT MAX(did) FROM deliverydriver;");
+            while(rs.next()) {
+            	did = val.nextInt((rs.getInt("max")+1)-1) + 1;
+            }
+                        
+            stmt.executeUpdate("INSERT INTO Delivers (dID, order_id, customer_id) VALUES (" + did+ "," + oID +","+ cid +")");
+            
+            stmt.close();
+            c.commit();
+            c.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
     }
     
   /*  public String UserID;

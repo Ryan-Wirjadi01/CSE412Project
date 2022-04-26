@@ -75,6 +75,7 @@ public class RestaurantView extends JDialog{
 				int cID = Integer.parseInt(UserID);
 				int oID = dc.getorderID();
 				dc.insertOrder("not delivered", 4, 3, oID, 4 , dc.timeStamp(),cID, 1, totalPrice);
+				dc.insertDriver(oID, cID);
 				dispose();
 				
 				orderPage op = new orderPage(checkOutList, totalPrice, name, oID);

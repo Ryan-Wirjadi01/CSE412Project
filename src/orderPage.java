@@ -25,6 +25,7 @@ public class orderPage extends JDialog{
 	
 	private String status= ""; 
 	private Float price = (float)0.00;
+	private String driver="";
 	
 	public orderPage(ArrayList<String> foodList, Float totalPrice, String restName, int oID) {
         super();
@@ -47,7 +48,9 @@ public class orderPage extends JDialog{
 		JLabel idLabel = new JLabel("Order ID: " + oID);	
 		JLabel statusLabel = new JLabel("Order Status: " + status);	
 		JLabel restaurantLabel = new JLabel("Restaurant: "+ restName);	
-		JLabel priceLabel = new JLabel("Order Total: " + price);	
+		JLabel priceLabel = new JLabel("Order Total: " + price);
+		JLabel driverLabel = new JLabel("Delivery Driver: " + driver);
+
 		
 		//label set text 
 		this.add(confirmationPanel);
@@ -57,7 +60,8 @@ public class orderPage extends JDialog{
 		confirmationPanel.add(statusLabel);
 		confirmationPanel.add(restaurantLabel);
 		confirmationPanel.add(priceLabel);
-		
+		confirmationPanel.add(driverLabel);
+
 		Timer time = new Timer();
 		time.schedule(new TimerTask(){
 
@@ -115,6 +119,25 @@ public class orderPage extends JDialog{
 	        status = builder.toString();
 
          }
+	     //get driver information
+	     rs = stmt.executeQuery("SELECT name FROM deliverydriver, delivers WHERE deliverydriver.did = delivers.did AND delivers.order_id = "+ orderID +";");
+	     
+	     while(rs.next()) {
+        	 Dname = rs.getCharacterStream("name");
+		    
+		    //used to convert reader to string
+		    StringBuilder builder = new StringBuilder();
+	        int numChars;
+	        char[] buffer = new char[4096];
+
+	        while ((numChars = Dname.read(buffer)) >= 0) {
+	            builder.append(buffer, 0, numChars);
+	        }
+	        
+	        driver = builder.toString();
+
+         }
+	     
 	     rs.close();
          stmt.close(); 
          c.close();
