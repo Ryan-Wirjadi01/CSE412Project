@@ -24,6 +24,7 @@ public class CustomerProfile extends JDialog{
     private String customerAddress;
     private int orderCount;
     private String orders;
+    private int cardInfo;
 	
 	public CustomerProfile(String cid){
 		super();
@@ -32,7 +33,7 @@ public class CustomerProfile extends JDialog{
 		this.setResizable(false);
 		
 		JPanel customerPanel = new JPanel();
-		customerPanel.setLayout(new GridLayout(4, 1, 10, 10));
+		customerPanel.setLayout(new GridLayout(10, 1, 10, 10));
 		customerPanel.setBorder(new EmptyBorder(150, 20, 300, 20));
 		
 		try {			
@@ -47,13 +48,16 @@ public class CustomerProfile extends JDialog{
 		JLabel IDLabel = new JLabel("Customer ID: " + customerID);
 		JLabel addressLabel = new JLabel("Address: " + customerAddress);
 		JLabel orderLabel = new JLabel("Current Orders: " + orderCount);
+		JLabel payInfo = new JLabel("Card Information: xxx - " + cardInfo);
+		
 		welcomeLabel.setFont(new Font("Ariel", Font.BOLD, 20));
 		
 		customerPanel.add(welcomeLabel);
 		customerPanel.add(IDLabel);
 		customerPanel.add(addressLabel);
 		customerPanel.add(orderLabel);
-	
+		customerPanel.add(payInfo);
+
 		this.add(customerPanel);
 	} 	
 	
@@ -73,6 +77,8 @@ public class CustomerProfile extends JDialog{
 		    while(result.next()) {
 		    	customerID = result.getInt("cid");
 		    	customerAddress = result.getString("address");
+		    	cardInfo = result.getInt("pay_information");
+		    	cardInfo = cardInfo % 100000;
 		    	
 			    Cname = result.getCharacterStream("name");
 			    
@@ -106,8 +112,6 @@ public class CustomerProfile extends JDialog{
 	    String user = dc.getUser();
 	    String password = dc.getPass();	//password is specific to the user -- make sure to change 
 	   
-	    //driverLogin dl = new driverLogin();
-
 	    String query = "SELECT order_id from delivers where did = " + UserID + ";";
 		 
         try (Connection con = DriverManager.getConnection(url, user, password); PreparedStatement pst = con.prepareStatement(query)) {
