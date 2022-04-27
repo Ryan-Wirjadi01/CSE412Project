@@ -7,10 +7,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import javax.swing.BoxLayout;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -26,6 +26,7 @@ public class orderPage extends JDialog{
 	private String status= ""; 
 	private Float price = (float)0.00;
 	private String driver="";
+	private DecimalFormat df = new DecimalFormat("0.00");
 	
 	public orderPage(ArrayList<String> foodList, Float totalPrice, String restName, int oID) {
         super();
