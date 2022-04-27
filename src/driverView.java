@@ -27,8 +27,8 @@ public class driverView {
 	public JPanel driverPanel() {
 		//Create the GUI
 		JPanel driverPanel = new JPanel();
-		driverPanel.setLayout(new GridLayout(10, 1, 10, 10));
-		driverPanel.setBorder(new EmptyBorder(150, 50, 300, 50));
+		driverPanel.setLayout(new GridLayout(20, 1, 10, 10));
+		driverPanel.setBorder(new EmptyBorder(50, 20, 50, 20));
 		
 		try {			
 			driverInfo();
